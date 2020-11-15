@@ -44,4 +44,12 @@ public class Reservacion extends Libro{
     public void setPeriodoRenta(int periodoRenta) {
         this.periodoRenta = periodoRenta;
     }
+
+    @Override
+    public String toString() {
+        if(activo)
+            return titulo+" estado: rentado, dias rentado: "+periodoRenta;
+        else
+            return titulo+" estado: completado, dias rentado: "+periodoRenta;
+    }
 }

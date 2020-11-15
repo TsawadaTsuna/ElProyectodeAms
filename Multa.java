@@ -48,4 +48,12 @@ public class Multa {
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
+
+    @Override
+    public String toString() {
+        if(estado)
+            return "$"+monto+" estado: pendiente";
+        else
+            return "$"+monto+" estado: pagada";
+    }
 }

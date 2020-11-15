@@ -45,4 +45,10 @@ public class Libro {
     public void setEditorial(String editorial) {
         this.editorial = editorial;
     }
+
+    @Override
+    public String toString() {
+        return this.titulo+" escrito por "+this.autores;
+    }
 }
+

@@ -16,6 +16,11 @@ public class Usuario {
         this.multas = new ArrayList<>();
     }
 
+    public Usuario(){
+        this.reservaciones = new Reservacion[3];
+        this.multas = new ArrayList<>();
+    }
+
     public Reservacion reservar(Libro libro){
         Reservacion r1 = new Reservacion(0,this.matricula,libro,"11/11/20",4);
         for (int i = 0; i<this.reservaciones.length;i++){
