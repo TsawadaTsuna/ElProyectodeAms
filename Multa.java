@@ -1,12 +1,16 @@
 public class Multa {
-    public String matricula;
-    public int monto;
-    public String razon;
-    public String estado;
-    public int multaID;
+    private String matricula;
+    private int monto;
+    private String razon;
+    private boolean estado;
+    private int multaID;
 
-    public Multa(Usuario usuario, int monto, String razon, String matricula) {
-
+    public Multa(int multaID, Usuario usuario, int monto, String razon, boolean estado) {
+        this.matricula = usuario.getMatricula();
+        this.multaID = multaID;
+        this.monto = monto;
+        this.razon = razon;
+        this.estado = estado;
     }
 
     public int getMonto() {
@@ -25,15 +29,23 @@ public class Multa {
         this.razon = razon;
     }
 
-    public String getEstado() {
+    public boolean getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 
     public int getMultaID() {
         return multaID;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 }

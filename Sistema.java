@@ -1,5 +1,15 @@
+import java.util.ArrayList;
+
 public class Sistema {
-    public boolean login(String user,String password){
+    public ArrayList<Usuario> blackList;
+    public ArrayList<Libro> libreria;
+
+    public Sistema() {
+        this.blackList = new ArrayList<>();
+        this.libreria = new ArrayList<>();
+    }
+
+    public boolean login(String user, String password){
         return false;
     }
 
@@ -18,5 +28,6 @@ public class Sistema {
     private boolean validarReservacion(Reservacion reservacion){
         return false;
     }
+
 
 }
