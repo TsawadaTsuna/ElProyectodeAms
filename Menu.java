@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Menu {
     public JTextField user, password,busTitulo,busAutor,busEdit,libroReserva;
-    public JButton login,buscar,reservar;
+    public JButton login,buscar,reservar, retorno1, retorno2;
     public Sistema s;
     public boolean conflog;
 
@@ -47,7 +47,7 @@ public class Menu {
 
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Image fondo = new ImageIcon("FondoUser.png").getImage();
+                Image fondo = new ImageIcon("FondoAdmin.png").getImage();
                 g.drawImage(fondo, 0, 0, loginView.getWidth(), loginView.getHeight(), loginView);
             }
         };
@@ -55,12 +55,16 @@ public class Menu {
         panCont.setLayout(cl);
         panCont.add(loginView,"Log");
         panCont.add(vistaUser,"User");
+        panCont.add(vistaAdmin,"Adm");
 
         loginView.setPreferredSize(new Dimension(800,600));
         loginView.setLayout(null);
 
         vistaUser.setPreferredSize(new Dimension(800,600));
         vistaUser.setLayout(null);
+
+        vistaAdmin.setPreferredSize(new Dimension(800,600));
+        vistaAdmin.setLayout(null);
 
         s=new Sistema();
         user = new JTextField();
@@ -78,10 +82,12 @@ public class Menu {
                 if(user.getText().equals("admin")&&password.getText().equals("1234")){
                     conflog=true;
                     s.usuario=new Usuario("admin","1234","Admin");
-                    cl.show(panCont,"User");
+                    cl.show(panCont,"Adm");
+                }else if (s.login(user.getText(),password.getText())){
+                    cl.show(panCont,"User");  
+                    conflog=true;  
                 }else
-                    conflog=s.login(user.getText(),password.getText());
-
+                    conflog=false;
                 System.out.println(conflog);
             }
         });
@@ -148,6 +154,30 @@ public class Menu {
                     s.crearRservacion(new Libro(9909989l,libroReserva.getText(),"S. Skinner,","SSS"));
             }
         });
+
+        retorno1 = new JButton("");
+        retorno1.setContentAreaFilled(false);
+        retorno1.setBorderPainted(false);
+        retorno1.setBounds(20, 527, 65, 68);
+        retorno1.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(panCont,"Log");
+            }
+        });
+        vistaUser.add(retorno1);
+
+        retorno2 = new JButton("");
+        retorno2.setContentAreaFilled(false);
+        retorno2.setBorderPainted(false);
+        retorno2.setBounds(20, 527, 65, 68);
+        retorno2.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cl.show(panCont,"Log");
+            }
+        });
+        vistaAdmin.add(retorno2);
 
 
         vistaUser.add(busAutor);
