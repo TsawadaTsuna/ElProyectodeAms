@@ -7,7 +7,7 @@ public class Ventana extends JFrame {
         super("Biblioteca");
         Menu m= new Menu();
         //Logica de cambio de panel
-        this.add(m.loginView);
+        this.add(m.panCont);
         this.pack();
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);

@@ -15,12 +15,12 @@ public class Menu {
     public JList<String> multaJList;
     public JList<String> libroJList;
     public ArrayList<Libro> resultados;
+    private CardLayout cl;
 
     public Menu(){
-        CardLayout cl=new CardLayout();
+        cl = new CardLayout();
 
         panCont = new JPanel();
-        panCont.setLayout(cl);
 
         loginView= new JPanel(){
             private static final long serialVersionUID = 1L;
@@ -31,8 +31,6 @@ public class Menu {
                 g.drawImage(fondo, 0, 0, loginView.getWidth(), loginView.getHeight(), loginView);
             }
         };
-        loginView.setPreferredSize(new Dimension(800,600));
-        loginView.setLayout(null);
 
         vistaUser = new JPanel(){
             private static final long serialVersionUID = 1L;
@@ -54,10 +52,12 @@ public class Menu {
             }
         };
 
+        panCont.setLayout(cl);
         panCont.add(loginView,"Log");
-        //panCont.add(vistaUser,"User");
-        panCont.add(vistaAdmin,"Admin");
+        panCont.add(vistaUser,"User");
 
+        loginView.setPreferredSize(new Dimension(800,600));
+        loginView.setLayout(null);
 
         vistaUser.setPreferredSize(new Dimension(800,600));
         vistaUser.setLayout(null);
@@ -164,7 +164,6 @@ public class Menu {
         vistaUser.add(buscar);*/
 
         //vista del admin
-
         cl.show(panCont,"Log");
     }
 }
