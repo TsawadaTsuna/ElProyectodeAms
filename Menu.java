@@ -1,12 +1,19 @@
 import javax.swing.*;
+
+//import sun.jvm.hotspot.tools.SysPropsDumper;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Menu {
     public JTextField user, password,busTitulo,busAutor,busEdit,libroReserva, 
-                      regAutor, regTitulo, regEditorial, regIssbn, mulMonto, mulMatri, mulRazon;
+                      regAutor, regTitulo, regIssbn, regEditorial, mulMonto, mulMatri, mulRazon;
     public JButton login,buscar,reservar, retorno1, retorno2, registrar, bloquear, multar, actMulta, actReser;
     public Sistema s;
     public boolean conflog;
@@ -233,7 +240,21 @@ public class Menu {
         registrar.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("REGISTRANDO");
+                try{
+                    if(regAutor.getText().isEmpty() || regTitulo.getText().isEmpty() || regEditorial.getText().isEmpty() || regIssbn.getText().isEmpty()){
+                        System.out.println("Favor de llenar todos las casillas de registro ");
+                    }else{
+                        FileWriter registro = new FileWriter("libros.txt", true);
+                        String libroRegistro = "\n" + regAutor.getText() + "/" + regTitulo.getText() + "/" + regEditorial.getText() + "/" + regIssbn.getText();
+                        registro.append(libroRegistro);
+                        registro.close();
+                        System.out.println("REGISTRANDO");
+                    }
+                }catch(IOException ex){
+                    System.out.println("ERROR");
+                    ex.printStackTrace();
+                }
+                
             }
         });
         vistaAdmin.add(registrar);
