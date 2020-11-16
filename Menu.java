@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class Menu {
-    public JTextField user, password,busTitulo,busAutor,busEdit,libroReserva;
-    public JButton login,buscar,reservar, retorno1, retorno2;
+    public JTextField user, password,busTitulo,busAutor,busEdit,libroReserva, regAutor, regTitulo, regEditorial, regIssbn;
+    public JButton login,buscar,reservar, retorno1, retorno2, registrar, bloquear;
     public Sistema s;
     public boolean conflog;
 
@@ -14,6 +14,7 @@ public class Menu {
     public JList<String> reservacionJList;
     public JList<String> multaJList;
     public JList<String> libroJList;
+    public JList<String> userJList;
     public ArrayList<Libro> resultados;
     private CardLayout cl;
 
@@ -183,7 +184,7 @@ public class Menu {
         vistaUser.add(buscar);
         buscar.setContentAreaFilled(false);
         buscar.setBorderPainted(false);
-        buscar.setBounds(725, 10, 50, 50);
+        buscar.setBounds(715, 96, 50, 50);
 
         vistaUser.add(busAutor);
         busTitulo.setBounds(450,112,250,20);
@@ -205,12 +206,46 @@ public class Menu {
         reservacionJList.setBounds(40, 100, 220, 367);
        
         /*
-        
-        
         vistaUser.add(libroReserva);
         */
 
         //vista del admin
+
+        regTitulo = new JTextField();
+        regAutor = new JTextField();
+        regIssbn = new JTextField();
+        regEditorial = new JTextField();
+
+        vistaAdmin.add(regTitulo);
+        regTitulo.setBounds(450,112,250,20);
+        vistaAdmin.add(regAutor);
+        regAutor.setBounds(450,145,250,20);
+        vistaAdmin.add(regEditorial);
+        regEditorial.setBounds(450,180,250,20);
+        vistaAdmin.add(regIssbn);
+        regIssbn.setBounds(450,215,250,20);
+
+        registrar = new JButton();
+        registrar.setContentAreaFilled(false);
+        registrar.setBorderPainted(false);
+        registrar.setBounds(715, 96, 50, 50);
+        registrar.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("REGISTRANDO");
+            }
+        });
+        vistaAdmin.add(registrar);
+
+        DefaultListModel<String> usermod=new DefaultListModel<>();
+        userJList=new JList<>(usermod);
+        userJList.setBounds(40, 100, 220, 367);
+        vistaAdmin.add(userJList);
+
+        bloquear = new JButton("Bloquear");
+        bloquear.setBounds(170,490,90,50);
+        vistaAdmin.add(bloquear);
+
         cl.show(panCont,"Log");
     }
 }
