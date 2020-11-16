@@ -10,44 +10,87 @@ public class Menu {
     public Sistema s;
     public boolean conflog;
 
-    public JPanel loginView,vistaUser,vistaAdmin;
+    public JPanel loginView,vistaUser,vistaAdmin,panCont;
     public JList<String> reservacionJList;
     public JList<String> multaJList;
     public JList<String> libroJList;
     public ArrayList<Libro> resultados;
 
     public Menu(){
-        CardLayout c1=new CardLayout();
+        CardLayout cl=new CardLayout();
+
+        panCont = new JPanel();
+        panCont.setLayout(cl);
+
+        loginView= new JPanel(){
+            private static final long serialVersionUID = 1L;
+
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Image fondo = new ImageIcon("FondoLogin.png").getImage();
+                g.drawImage(fondo, 0, 0, loginView.getWidth(), loginView.getHeight(), loginView);
+            }
+        };
+        loginView.setPreferredSize(new Dimension(800,600));
+        loginView.setLayout(null);
+
+        vistaUser = new JPanel(){
+            private static final long serialVersionUID = 1L;
+
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Image fondo = new ImageIcon("FondoUser.png").getImage();
+                g.drawImage(fondo, 0, 0, loginView.getWidth(), loginView.getHeight(), loginView);
+            }
+        };
+
+        vistaAdmin = new JPanel(){
+            private static final long serialVersionUID = 1L;
+
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Image fondo = new ImageIcon("FondoUser.png").getImage();
+                g.drawImage(fondo, 0, 0, loginView.getWidth(), loginView.getHeight(), loginView);
+            }
+        };
+
+        panCont.add(loginView,"Log");
+        //panCont.add(vistaUser,"User");
+        panCont.add(vistaAdmin,"Admin");
+
+
+        vistaUser.setPreferredSize(new Dimension(800,600));
+        vistaUser.setLayout(null);
+
         s=new Sistema();
         user = new JTextField();
-        user.setBounds(290, 230, 150, 25);
+        user.setBounds(580, 230, 150, 25);
 
         password = new JPasswordField();
-        password.setBounds(290, 275, 150, 25);
+        password.setBounds(580, 275, 150, 25);
         login=new JButton();
-        login.setBounds(354, 385, 45, 45);
+        login.setBounds(740, 240, 45, 45);
+        login.setContentAreaFilled(false);
+        login.setBorderPainted(false);
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(user.getText().equals("admin")&&password.getText().equals("1234")){
                     conflog=true;
                     s.usuario=new Usuario("admin","1234","Admin");
+                    cl.show(panCont,"User");
                 }else
                     conflog=s.login(user.getText(),password.getText());
 
                 System.out.println(conflog);
             }
         });
-        loginView=new JPanel();
-        loginView.setPreferredSize(new Dimension(500,500));
-        loginView.setLayout(null);
+        
+
         loginView.add(user,"USER TXT");
         loginView.add(password,"PASSWORD TEXT");
         loginView.add(login,"LOGIN BTN");
-
-        vistaUser= new JPanel();
-        vistaUser.setPreferredSize(new Dimension(500,500));
-        vistaUser.setLayout(null);
+       
         busTitulo= new JTextField();
         libroReserva=new JTextField();
         busAutor=new JTextField();
@@ -105,8 +148,12 @@ public class Menu {
                     s.crearRservacion(new Libro(9909989l,libroReserva.getText(),"S. Skinner,","SSS"));
             }
         });
+
+
+        vistaUser.add(busAutor);
+
         //Acomodar la vista de usuario
-        vistaUser.add(busTitulo);
+        /*vistaUser.add(busTitulo);
         vistaUser.add(busAutor);
         vistaUser.add(busEdit);
         vistaUser.add(libroJList);
@@ -114,8 +161,10 @@ public class Menu {
         vistaUser.add(multaJList);
         vistaUser.add(reservar);
         vistaUser.add(libroReserva);
-        vistaUser.add(buscar);
+        vistaUser.add(buscar);*/
 
         //vista del admin
+
+        cl.show(panCont,"Log");
     }
 }
