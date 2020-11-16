@@ -5,8 +5,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class Menu {
-    public JTextField user, password,busTitulo,busAutor,busEdit,libroReserva, regAutor, regTitulo, regEditorial, regIssbn;
-    public JButton login,buscar,reservar, retorno1, retorno2, registrar, bloquear;
+    public JTextField user, password,busTitulo,busAutor,busEdit,libroReserva, 
+                      regAutor, regTitulo, regEditorial, regIssbn, mulMonto, mulMatri, mulRazon;
+    public JButton login,buscar,reservar, retorno1, retorno2, registrar, bloquear, multar, actMulta, actReser;
     public Sistema s;
     public boolean conflog;
 
@@ -244,7 +245,56 @@ public class Menu {
 
         bloquear = new JButton("Bloquear");
         bloquear.setBounds(170,490,90,50);
+        bloquear.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("BLOQUEANDO");
+            }
+        });
         vistaAdmin.add(bloquear);
+
+        multar = new JButton("Multar");
+        multar.setBounds(375,490,90,50);
+        multar.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("MULTANDO");
+            }
+        });
+        vistaAdmin.add(multar);
+
+        mulRazon = new JTextField();
+        mulRazon.setBounds(425,453,100,20);
+        vistaAdmin.add(mulRazon);
+
+        mulMonto = new JTextField();
+        mulMonto.setBounds(425,400,100,20);
+        vistaAdmin.add(mulMonto);
+
+        mulMatri = new JTextField();
+        mulMatri.setBounds(425,344,100,20);
+        vistaAdmin.add(mulMatri);
+        
+        actMulta = new JButton("Actualizar Multa");
+        actMulta.setBounds(580,360,180,80);
+        actMulta.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("ActMulta");
+            }
+        });
+        vistaAdmin.add(actMulta);
+
+        actReser = new JButton("Actualizar Reservacion");
+        actReser.setBounds(580,460,180,80);
+        actReser.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("ActRESERRRERERERERERERE HELP ME I NEED SLEEP");
+            }
+        });
+        vistaAdmin.add(actReser);
+
 
         cl.show(panCont,"Log");
     }
