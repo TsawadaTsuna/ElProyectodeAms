@@ -118,7 +118,7 @@ public class Menu {
         DefaultListModel<String> libromod=new DefaultListModel<>();
         libroJList=new JList<>(libromod);
         buscar=new JButton();
-        reservar=new JButton();
+        reservar=new JButton("Reservar");
         buscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -179,19 +179,36 @@ public class Menu {
         });
         vistaAdmin.add(retorno2);
 
-
-        vistaUser.add(busAutor);
-
         //Acomodar la vista de usuario
-        /*vistaUser.add(busTitulo);
+        vistaUser.add(buscar);
+        buscar.setContentAreaFilled(false);
+        buscar.setBorderPainted(false);
+        buscar.setBounds(725, 10, 50, 50);
+
         vistaUser.add(busAutor);
+        busTitulo.setBounds(450,112,250,20);
         vistaUser.add(busEdit);
+        busAutor.setBounds(450,145,250,20);
+        vistaUser.add(busTitulo);
+        busEdit.setBounds(450,180,250,20);
+
         vistaUser.add(libroJList);
-        vistaUser.add(reservacionJList);
-        vistaUser.add(multaJList);
+        libroJList.setBounds(350,270,300,90);
+
         vistaUser.add(reservar);
+        reservar.setBounds(660,290,100,45);
+
+        vistaUser.add(multaJList);
+        multaJList.setBounds(350,450,400,120);
+
+        vistaUser.add(reservacionJList);
+        reservacionJList.setBounds(40, 100, 220, 367);
+       
+        /*
+        
+        
         vistaUser.add(libroReserva);
-        vistaUser.add(buscar);*/
+        */
 
         //vista del admin
         cl.show(panCont,"Log");
