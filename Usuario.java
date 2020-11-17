@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Usuario {
     private String matricula;
@@ -22,7 +23,8 @@ public class Usuario {
     }
 
     public Reservacion reservar(Libro libro){
-        Reservacion r1 = new Reservacion(0,this.matricula,libro,"11/11/20",4);
+        Random ran = new Random();
+        Reservacion r1 = new Reservacion(ran.nextInt(100000),this.matricula,libro,"11/11/20",4);
         for (int i = 0; i<this.reservaciones.length;i++){
             if(reservaciones[i]==null){
                 reservaciones[i] = r1;
@@ -32,11 +34,13 @@ public class Usuario {
         return null;
     }
 
-    public void cancelarReservacion(Reservacion reservacion){
+    public void cancelarReservacion(int id){
         for (int i = 0; i<this.reservaciones.length;i++){
-            if(this.reservaciones[i].equals(reservacion)){
-                this.reservaciones[i] = null;
-                System.out.println("Reservacion cancelada");
+            if(this.reservaciones[i]!=null) {
+                if (this.reservaciones[i].getNumeroReserva() == id) {
+                    this.reservaciones[i] = null;
+                    break;
+                }
             }
         }
     }
@@ -73,4 +77,8 @@ public class Usuario {
         this.reservaciones = reservaciones;
     }
 
+    @Override
+    public String toString() {
+        return matricula+" "+password;
+    }
 }

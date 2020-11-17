@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Ventana extends JFrame {
-
+    Menu m;
     public Ventana(){
         super("Biblioteca");
         Menu m= new Menu();
@@ -23,5 +23,6 @@ public class Ventana extends JFrame {
 
     public static void main(String[] args) {
         Ventana v= new Ventana();
+        System.out.println("");
     }
 }

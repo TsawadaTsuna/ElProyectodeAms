@@ -48,7 +48,7 @@ public class Libro {
 
     @Override
     public String toString() {
-        return this.titulo+" escrito por "+this.autores;
+        return this.titulo+"-"+this.autores+"-"+this.iSBN+"-"+this.editorial;
     }
 }
 

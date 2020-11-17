@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Sistema {
-    public ArrayList<Usuario> blackList;
     public ArrayList<Libro> libreria;
-    public Usuario usuario;
+    public ArrayList<Usuario> usuarios;
 
     public Sistema() {
-        this.blackList = new ArrayList<>();
         this.libreria = new ArrayList<>();
+        this.usuarios = new ArrayList<>();
         try{
             BufferedReader br=new BufferedReader(new FileReader("libros.txt"));
             String linea=br.readLine();
@@ -19,33 +18,43 @@ public class Sistema {
             while (linea!=null){
                 usepass=linea.split("/");
                 this.libreria.add(new Libro(Long.parseLong(usepass[3]), usepass[0], usepass[1], usepass[3]));
-                
+
                 linea=br.readLine();
-                
+
             }
             System.out.println(libreria.toString());
             br.close();
+            BufferedReader bru=new BufferedReader(new FileReader("usuarios.txt"));
+            linea=bru.readLine();
+            while (linea!=null){
+                usepass=linea.split(" ");
+                this.usuarios.add(new Usuario(usepass[0], usepass[1], usepass[0]));
+                linea=bru.readLine();
+
+            }
+            System.out.println(libreria.toString());
+            bru.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        usuario=new Usuario();
+
     }
 
-    public boolean login(String user, String password){
+    public boolean login(String user, String password, String nombre){
         try{
             BufferedReader br=new BufferedReader(new FileReader("usuarios.txt"));
             String linea=br.readLine();
             String[] usepass=linea.split(" ");
             if(user.equals(usepass[0])&&password.equals(usepass[1])){
-                usuario=new Usuario(user,password,"Juan");
+                usuarios.add(new Usuario(user,password,nombre));
                 return true;
             }
             while (linea!=null){
                 usepass=linea.split(" ");
                 if(user.equals(usepass[0])&&password.equals(usepass[1])){
-                    usuario=new Usuario(user,password,"Juan");
+                    usuarios.add(new Usuario(user,password,nombre));
                     return true;
                 }
                 linea=br.readLine();
@@ -110,12 +119,22 @@ public class Sistema {
             return false;
     }
 
-    public Reservacion crearRservacion(Libro libro){
+    public Reservacion crearReservacion(Libro libro, Usuario usuario){
         if(validarReservacion(usuario)){
             return usuario.reservar(libro);
         }else {
             return null;
         }
+    }
+
+    public void bloquear(Usuario user){
+        Administrador admin=new Administrador("admin","1234",this);
+        admin.bloquearUsuario(user);
+    }
+
+    public void multar(Usuario user,String razon, boolean estado, int monto){
+        Administrador admin= new Administrador("admin","1234",this);
+        admin.multarUsuario(user, razon, estado, monto);
     }
 
 }

@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 
 //import sun.jvm.hotspot.tools.SysPropsDumper;
@@ -12,11 +13,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Menu {
-    public JTextField user, password,busTitulo,busAutor,busEdit,libroReserva, 
-                      regAutor, regTitulo, regIssbn, regEditorial, mulMonto, mulMatri, mulRazon;
-    public JButton login,buscar,reservar, retorno1, retorno2, registrar, bloquear, multar, actMulta, actReser;
+    public JTextField user, password,busTitulo,busAutor,busEdit,libroReserva,
+            regAutor, regTitulo, regIssbn, regEditorial, mulMonto, mulMatri, mulRazon;
+    public JButton login,buscar,reservar, retorno1, retorno2, registrar, bloquear, multar, actMulta, actReser, cancelar;
     public Sistema s;
     public boolean conflog;
+    public String userAct;
+    public Usuario act;
 
     public JPanel loginView,vistaUser,vistaAdmin,panCont;
     public JList<String> reservacionJList;
@@ -29,6 +32,7 @@ public class Menu {
     public Menu(){
         cl = new CardLayout();
 
+        act=new Usuario();
         panCont = new JPanel();
 
         loginView= new JPanel(){
@@ -90,38 +94,48 @@ public class Menu {
             public void actionPerformed(ActionEvent e) {
                 if(user.getText().equals("admin")&&password.getText().equals("1234")){
                     conflog=true;
-                    s.usuario=new Usuario("admin","1234","Admin");
+                    //s.usuarios.add(new Usuario("admin","1234","Admin"));
                     cl.show(panCont,"Adm");
-                }else if (s.login(user.getText(),password.getText())){
-                    cl.show(panCont,"User");  
-                    conflog=true;  
+                    userAct="admin";
+                }else if (s.login(user.getText(),password.getText(),user.getText())){
+                    cl.show(panCont,"User");
+                    conflog=true;
+                    userAct=user.getText();
                 }else
                     conflog=false;
                 System.out.println(conflog);
             }
         });
-        
+
 
         loginView.add(user,"USER TXT");
         loginView.add(password,"PASSWORD TEXT");
         loginView.add(login,"LOGIN BTN");
-       
+
+
         busTitulo= new JTextField();
         libroReserva=new JTextField();
         busAutor=new JTextField();
         busEdit=new JTextField();
         DefaultListModel<String> resmod=new DefaultListModel<>();
         reservacionJList =new JList<>(resmod);
+        act=s.usuarios.get(0);
+        for(int i=0;i<s.usuarios.size();i++){
+            if(s.usuarios.get(i).getMatricula().equals(userAct)){
+                act=s.usuarios.get(i);
+                break;
+            }
+        }
         for(int i=0;i<3;i++){
-            if(s.usuario.getReservaciones()[i]!=null){
-                resmod.addElement(s.usuario.getReservaciones()[i].toString());
+            if(act.getReservaciones()[i]!=null){
+                resmod.addElement(act.getReservaciones()[i].toString());
             }
         }
         DefaultListModel<String> multamod=new DefaultListModel<>();
         multaJList=new JList<>(multamod);
-        if(s.usuario.multas.size()!=0){
-            for (int i=0;i<s.usuario.multas.size();i++){
-                multamod.addElement(s.usuario.multas.get(i).toString());
+        if(act.multas.size()!=0){
+            for (int i=0;i<act.multas.size();i++){
+                multamod.addElement(act.multas.get(i).toString());
             }
         }
         DefaultListModel<String> libromod=new DefaultListModel<>();
@@ -132,19 +146,19 @@ public class Menu {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Libro");
-                if(busTitulo.getText()!=null&&busAutor.getText()!=null&&busEdit!=null){
+                if(!busTitulo.getText().isEmpty()&&!busAutor.getText().isEmpty()&&!busEdit.getText().isEmpty()){
                     libromod.clear();
                     resultados=s.busqueda(busAutor.getText(),busEdit.getText(),busTitulo.getText());
                     for(int i=0;i<resultados.size();i++){
                         libromod.addElement(resultados.get(i).toString());
                     }
-                }else if(busTitulo.getText()!=null&&busAutor.getText()!=null){
+                }else if(!busTitulo.getText().isEmpty()&&!busAutor.getText().isEmpty()){
                     libromod.clear();
                     resultados=s.busqueda(busAutor.getText(),busTitulo.getText());
                     for(int i=0;i<resultados.size();i++){
                         libromod.addElement(resultados.get(i).toString());
                     }
-                }else if(busTitulo.getText()!=null){
+                }else if(!busTitulo.getText().isEmpty()){
                     libromod.clear();
                     resultados=s.busqueda(busTitulo.getText());
                     for(int i=0;i<resultados.size();i++){
@@ -157,14 +171,42 @@ public class Menu {
             }
         });
 
+
+
         reservar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(libroReserva.getText()!=null)
-                    s.crearRservacion(new Libro(9909989l,libroReserva.getText(),"S. Skinner,","SSS"));
+                if(!libroJList.isSelectionEmpty()) {
+                    String[] libroselec = libroJList.getSelectedValue().split("-");
+                    s.crearReservacion(new Libro(Long.parseLong(libroselec[2]),libroselec[0] , libroselec[1], libroselec[3]), act);
+                    resmod.clear();
+                    for(int i=0;i<3;i++){
+                        if(act.getReservaciones()[i]!=null){
+                            resmod.addElement(act.getReservaciones()[i].toString());
+                        }
+                    }
+                }
             }
         });
 
+        cancelar = new JButton("Cancelar");
+        cancelar.setBounds(170,490,90,50);
+        cancelar.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!reservacionJList.isSelectionEmpty()){
+                    String[] reserv=reservacionJList.getSelectedValue().split(" ");
+                    act.cancelarReservacion(Integer.parseInt(reserv[0]));
+                    resmod.clear();
+                    for(int i=0;i<3;i++){
+                        if(act.getReservaciones()[i]!=null){
+                            resmod.addElement(act.getReservaciones()[i].toString());
+                        }
+                    }
+                }
+                System.out.println("cancelando");
+            }
+        });
         retorno1 = new JButton("");
         retorno1.setContentAreaFilled(false);
         retorno1.setBorderPainted(false);
@@ -191,6 +233,7 @@ public class Menu {
 
         //Acomodar la vista de usuario
         vistaUser.add(buscar);
+        vistaUser.add(cancelar);
         buscar.setContentAreaFilled(false);
         buscar.setBorderPainted(false);
         buscar.setBounds(715, 96, 50, 50);
@@ -213,7 +256,7 @@ public class Menu {
 
         vistaUser.add(reservacionJList);
         reservacionJList.setBounds(40, 100, 220, 367);
-       
+
         /*
         vistaUser.add(libroReserva);
         */
@@ -250,18 +293,23 @@ public class Menu {
                         registro.append(libroRegistro);
                         registro.close();
                         System.out.println("REGISTRANDO");
+                        s.libreria.add(new Libro(Long.parseLong(regIssbn.getText()),regTitulo.getText(),regAutor.getText(),regEditorial.getText()));
                     }
                 }catch(IOException ex){
                     System.out.println("ERROR");
                     ex.printStackTrace();
                 }
-                
+
             }
         });
         vistaAdmin.add(registrar);
 
         DefaultListModel<String> usermod=new DefaultListModel<>();
         userJList=new JList<>(usermod);
+        //usermod.addElement("Matricula Nombre");
+        for(int i=0;i<s.usuarios.size();i++){
+            usermod.addElement(s.usuarios.get(i).toString());
+        }
         userJList.setBounds(40, 100, 220, 367);
         vistaAdmin.add(userJList);
 
@@ -270,6 +318,14 @@ public class Menu {
         bloquear.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(!userJList.isSelectionEmpty()){
+                    String[] userpass=userJList.getSelectedValue().split(" ");
+                    s.bloquear(new Usuario(userpass[0],userpass[1],"a"));
+                    usermod.clear();
+                    for(int i=0;i<s.usuarios.size();i++){
+                        usermod.addElement(s.usuarios.get(i).toString());
+                    }
+                }
                 System.out.println("BLOQUEANDO");
             }
         });
@@ -280,7 +336,24 @@ public class Menu {
         multar.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("MULTANDO");
+               if(!mulMatri.getText().isEmpty()&&!mulRazon.getText().isEmpty()&&!mulMonto.getText().isEmpty()){
+                   Usuario current=null;
+                   for(int i=0;i<s.usuarios.size();i++){
+                       if(s.usuarios.get(i).getMatricula().equals(mulMatri.getText())){
+                           current=s.usuarios.get(i);
+                           break;
+                       }
+                   }
+                   s.multar(current,mulRazon.getText(),true,Integer.parseInt(mulMonto.getText()));
+                   multamod.clear();
+                   if(act.multas.size()!=0){
+                       for (int i=0;i<act.multas.size();i++){
+                           multamod.addElement(act.multas.get(i).toString());
+                       }
+                   }
+               } else {
+                   JOptionPane.showMessageDialog(null,"Opcion invalida");
+               }
             }
         });
         vistaAdmin.add(multar);
@@ -296,23 +369,56 @@ public class Menu {
         mulMatri = new JTextField();
         mulMatri.setBounds(425,344,100,20);
         vistaAdmin.add(mulMatri);
-        
-        actMulta = new JButton("Actualizar Multa");
+
+        actMulta = new JButton("Actualizar Multas");
         actMulta.setBounds(580,360,180,80);
         actMulta.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("ActMulta");
+                if(!userJList.isSelectionEmpty()){
+                    String[] userpass=userJList.getSelectedValue().split(" ");
+                    Usuario current=null;
+                    for(int i=0;i<s.usuarios.size();i++){
+                        if(s.usuarios.get(i).getMatricula().equals(userpass[0])){
+                            current=s.usuarios.get(i);
+                            break;
+                        }
+                    }
+                    current.multas= new ArrayList<>();
+                    multamod.clear();
+                    if(act.multas.size()!=0){
+                        for (int i=0;i<act.multas.size();i++){
+                            multamod.addElement(act.multas.get(i).toString());
+                        }
+                    }
+                }
             }
         });
         vistaAdmin.add(actMulta);
 
-        actReser = new JButton("Actualizar Reservacion");
+        actReser = new JButton("Actualizar Reservaciones");
         actReser.setBounds(580,460,180,80);
         actReser.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("ActRESERRRERERERERERERE HELP ME I NEED SLEEP");
+                if(!userJList.isSelectionEmpty()) {
+                    String[] userpass = userJList.getSelectedValue().split(" ");
+                    Usuario current = null;
+                    for (int i = 0; i < s.usuarios.size(); i++) {
+                        if (s.usuarios.get(i).getMatricula().equals(userpass[0])) {
+                            current = s.usuarios.get(i);
+                            break;
+                        }
+                    }
+                    current.setReservaciones(new Reservacion[3]);
+                    resmod.clear();
+                    for(int i=0;i<3;i++){
+                        if(act.getReservaciones()[i]!=null){
+                            resmod.addElement(act.getReservaciones()[i].toString());
+                        }
+                    }
+
+                }
             }
         });
         vistaAdmin.add(actReser);

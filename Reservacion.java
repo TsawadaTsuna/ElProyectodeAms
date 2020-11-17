@@ -6,6 +6,7 @@ public class Reservacion extends Libro{
     public boolean activo;
 
     public Reservacion(int numeroReserva, String matricula,Libro libro,String fecha,int periodo){
+        super(libro.iSBN,libro.titulo,libro.autores,libro.editorial);
         this.numeroReserva = numeroReserva;
         this.matricula=matricula;
         fechaReserva=fecha;
@@ -48,8 +49,8 @@ public class Reservacion extends Libro{
     @Override
     public String toString() {
         if(activo)
-            return titulo+" estado: rentado, dias rentado: "+periodoRenta;
+            return numeroReserva+" "+titulo+" estado: rentado, dias rentado: "+periodoRenta;
         else
-            return titulo+" estado: completado, dias rentado: "+periodoRenta;
+            return numeroReserva+" "+titulo+" estado: completado, dias rentado: "+periodoRenta;
     }
 }
