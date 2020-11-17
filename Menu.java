@@ -131,6 +131,7 @@ public class Menu {
         buscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Libro");
                 if(busTitulo.getText()!=null&&busAutor.getText()!=null&&busEdit!=null){
                     libromod.clear();
                     resultados=s.busqueda(busAutor.getText(),busEdit.getText(),busTitulo.getText());

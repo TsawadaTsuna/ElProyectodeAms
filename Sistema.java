@@ -12,6 +12,24 @@ public class Sistema {
     public Sistema() {
         this.blackList = new ArrayList<>();
         this.libreria = new ArrayList<>();
+        try{
+            BufferedReader br=new BufferedReader(new FileReader("libros.txt"));
+            String linea=br.readLine();
+            String[] usepass;
+            while (linea!=null){
+                usepass=linea.split("/");
+                this.libreria.add(new Libro(Long.parseLong(usepass[3]), usepass[0], usepass[1], usepass[3]));
+                
+                linea=br.readLine();
+                
+            }
+            System.out.println(libreria.toString());
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         usuario=new Usuario();
     }
 
